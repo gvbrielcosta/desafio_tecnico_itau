@@ -21,4 +21,8 @@ public class TransacaoService {
     public List<TransacaoDTO> getTransacoes() {
         return transacoes;
     }
+
+    public void deletarTransacoes() {
+        transacoes.clear();
+    }
 }
