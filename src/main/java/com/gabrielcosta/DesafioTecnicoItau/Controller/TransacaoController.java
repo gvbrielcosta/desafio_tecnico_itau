@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.OffsetDateTime;
-
+@RequestMapping("/transacao")
 @RestController
 public class TransacaoController {
 
@@ -20,13 +20,8 @@ public class TransacaoController {
         this.transacaoService = transacaoService;
     }
 
-    @GetMapping("/estatistica")
-    public ResponseEntity<?> transacao() {
-        return ResponseEntity.status(HttpStatus.OK).body(transacaoService.getTransacoes());
-    }
-
-    @PostMapping("/transacao")
-    public ResponseEntity<?> transacao(@RequestBody TransacaoDTO transacaoDTO) {
+    @PostMapping()
+    public ResponseEntity<Void> transacao(@RequestBody TransacaoDTO transacaoDTO) {
         if (transacaoDTO.getDataHora() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } else if (transacaoDTO.getDataHora().isAfter(OffsetDateTime.now()) || transacaoDTO.getValor() < 0) {
@@ -35,10 +30,10 @@ public class TransacaoController {
         transacaoService.setTransacaoDTO(transacaoDTO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body("Transação criada com sucesso");
+                .build();
     }
 
-    @DeleteMapping("/transacao")
+    @DeleteMapping()
     public ResponseEntity<?> deletar() {
         transacaoService.deletarTransacoes();
         return ResponseEntity.ok().build();
